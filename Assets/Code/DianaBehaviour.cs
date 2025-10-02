@@ -37,5 +37,24 @@ public class DianaBehaviour : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject.Find("Score").GetComponent<ScoreSystem>().aumentarPuntuacion(1);
+        }
+    }
+
+    // si colisiona con una bala
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Bala"))
+        {
+            //destruye la bala
+            Destroy(other.gameObject);
+            //destruye a diana y animacion
+            this.gameObject.SetActive(false);
+            //aumenta la puntuacion
+            GameObject.Find("Score").GetComponent<ScoreSystem>().aumentarPuntuacion(1);
+        }
     }
 }
