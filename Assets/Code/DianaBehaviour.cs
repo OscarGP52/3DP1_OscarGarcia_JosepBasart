@@ -37,11 +37,6 @@ public class DianaBehaviour : MonoBehaviour
                 }
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject.Find("Score").GetComponent<ScoreSystem>().aumentarPuntuacion(1);
-        }
     }
 
     // si colisiona con una bala
