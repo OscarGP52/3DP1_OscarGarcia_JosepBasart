@@ -55,6 +55,10 @@ public class BulletBehavior : MonoBehaviour
         {
             Reload();
         }
+        if (readyToShoot && shooting && !reloading && bulletsLeft <=0)
+        {
+            Reload();
+        }
 
         if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
         {
@@ -83,7 +87,7 @@ public class BulletBehavior : MonoBehaviour
         Vector3 directionWithoutSpread = targetPoint - objectivePoint.position;
 
         float x = Random.Range(-spread, spread);
-        float y = Random.Range(-spread,spread);
+        float y = Random.Range(-spread, spread);
 
         Vector3 directionWithSpread = directionWithoutSpread + new Vector3(x, y, 0);
 
@@ -115,7 +119,7 @@ public class BulletBehavior : MonoBehaviour
     private void ResetShot()
     {
         readyToShoot = true;
-        allowbuttonhold = true;
+        allowinvoke = true;
     }
 
     private void Reload()
