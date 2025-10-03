@@ -33,11 +33,7 @@ public class BulletBehavior : MonoBehaviour
     public void Update()
     {
         MyInput();
-
-        if(ammoDisplay != null)
-        {
-            ammoDisplay.SetText(bulletsLeft/ bulletsPerClik + " / " + magSize / bulletsPerClik);
-        }
+        UpdateAmmoDisplay();
     }
 
     public void MyInput()
@@ -132,5 +128,21 @@ public class BulletBehavior : MonoBehaviour
         bulletsLeft = magSize;
         reloading = false;
     }
-     
+    
+    public void addAmmo(int ammo)
+    {
+        bulletsLeft += ammo;
+        if (bulletsLeft > magSize)
+        {
+            bulletsLeft = magSize;
+        }
+        UpdateAmmoDisplay();
+    }
+    private void UpdateAmmoDisplay()
+    {
+        if (ammoDisplay != null)
+        {
+            ammoDisplay.text = bulletsLeft + " / " + magSize;
+        }
+    }
 }

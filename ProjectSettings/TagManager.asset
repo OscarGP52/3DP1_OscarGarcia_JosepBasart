@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bala
+  - Life
+  - Shield
+  - Ammo
   layers:
   - Default
   - TransparentFX

@@ -17,7 +17,13 @@ public class PlayerController : MonoBehaviour
     public CharacterController m_CharacterController;
     float m_VerticalSpeed = 0.0f;
     private bool m_AngleLocked = false;
+    public TMPro.TextMeshProUGUI lifeText;
+    public TMPro.TextMeshProUGUI shieldText;
 
+    public int maxLife;
+    public int maxShield;
+    public int currentShield;
+    public int currentLife;
     public float m_Speed;
     public float m_JumpSpeed;
     public float m_SpeedMultiplier;
@@ -36,6 +42,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        shieldText.text = "Shield: " + currentShield.ToString();
+        lifeText.text = "Life: " + currentLife.ToString();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -96,6 +104,55 @@ public class PlayerController : MonoBehaviour
 
         else if (m_VerticalSpeed > 0.0f && (l_CollissionFlags & CollisionFlags.Above) != 0)
             m_VerticalSpeed = 0.0f;
+    }
 
+    public void recibirDaño(int daño)
+    {
+        currentLife -= daño;
+        if (currentLife < 0) currentLife = 0;
+        lifeText.text = "Life: " + currentLife.ToString();
+        if (currentLife == 0) morir();
+    }
+
+    public void curar(int cura)
+    {
+        currentLife += cura;
+        if (currentLife > 100) currentLife = 100;
+        lifeText.text = "Life: " + currentLife.ToString();
+    }
+
+    public void morir()
+    {
+        //muere
+        Debug.Log("Has muerto");
+        //reinicia la escena
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    public void recibirEscudo(int escudo)
+    {
+        currentShield += escudo;
+        if (currentShield < 0) currentShield = 0;
+        shieldText.text = "Shield: " + currentShield.ToString();
+    }
+
+    public int GetLife()
+    {
+        return currentLife;
+    }
+
+    public int GetShield()
+    {
+        return currentShield;
+    }
+
+    public int GetMaxLife()
+    {
+        return maxLife;
+    }
+
+    public int GetMaxShield()
+    {
+        return maxShield;
     }
 }
