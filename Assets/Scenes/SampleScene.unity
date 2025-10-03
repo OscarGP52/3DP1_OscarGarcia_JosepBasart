@@ -2235,7 +2235,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2519,8 +2519,8 @@ MonoBehaviour:
   shieldText: {fileID: 1115314476}
   maxLife: 100
   maxShield: 100
-  currentShield: 0
-  currentLife: 100
+  currentShield: 20
+  currentLife: 20
   m_Speed: 10
   m_JumpSpeed: 10
   m_SpeedMultiplier: 2
@@ -2826,7 +2826,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
