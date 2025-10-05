@@ -2192,9 +2192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98efdad5cb0717419cdc5055a93d062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: 20
-  life: 20
-  ammo: 30
 --- !u!136 &1219670252
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2494,9 +2491,9 @@ MonoBehaviour:
   lifeText: {fileID: 394481285}
   shieldText: {fileID: 1115314476}
   maxLife: 100
+  lifePoints: 20
   maxShield: 100
-  currentShield: 20
-  currentLife: 20
+  shieldPoints: 20
   m_Speed: 10
   m_JumpSpeed: 10
   m_SpeedMultiplier: 2
@@ -2650,9 +2647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98efdad5cb0717419cdc5055a93d062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: 0
-  life: 0
-  ammo: 0
 --- !u!4 &1455017886 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1f86d72fed7dc9a49a1f888e86b340e3, type: 3}
@@ -2933,9 +2927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98efdad5cb0717419cdc5055a93d062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: 0
-  life: 0
-  ammo: 0
 --- !u!4 &1574262136 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a7db56f8b661d54e9aff33e72ccbd92, type: 3}
@@ -3048,9 +3039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98efdad5cb0717419cdc5055a93d062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: 20
-  life: 20
-  ammo: 30
 --- !u!135 &1647314522
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3604,9 +3592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98efdad5cb0717419cdc5055a93d062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: 0
-  life: 0
-  ammo: 0
 --- !u!4 &1959546985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 14da9179396c60e48afd5f6687f89cbd, type: 3}
