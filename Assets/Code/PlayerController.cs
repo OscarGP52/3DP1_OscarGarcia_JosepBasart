@@ -5,6 +5,8 @@ using UnityEngine.Rendering;
 public class PlayerController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [Header("Player Vision")]
     float m_Yaw;
     float m_Pitch;
     public float m_YawSpeed;
@@ -20,17 +22,14 @@ public class PlayerController : MonoBehaviour
     public TMPro.TextMeshProUGUI lifeText;
     public TMPro.TextMeshProUGUI shieldText;
 
-    [Header("PlayerStats")]
+    [Header("Player Stats")]
     public int maxLife;
     int currentLife;
-    public int lifePoints;
     public int maxShield;
     int currentShield;
-    public int shieldPoints;
     public float m_Speed;
     public float m_JumpSpeed;
     public float m_SpeedMultiplier;
-
 
     [Header("Input")]
     public KeyCode m_RightKeyCode = KeyCode.D;
@@ -111,6 +110,18 @@ public class PlayerController : MonoBehaviour
             m_VerticalSpeed = 0.0f;
     }
 
+    public void RecibirEscudo(int escudo)
+    {
+        currentShield += escudo;
+        if (currentShield < 0) currentShield = 0;
+        shieldText.text = "Shield: " + currentShield.ToString();
+    }
+    public void Curar(int cura)
+    {
+        currentLife += cura;
+        if (currentLife > 100) currentLife = 100;
+        lifeText.text = "Life: " + currentLife.ToString();
+    }
     public void RecibirDaño(int daño)
     {
         currentLife -= daño;
@@ -118,34 +129,15 @@ public class PlayerController : MonoBehaviour
         lifeText.text = "Life: " + currentLife.ToString();
         if (currentLife == 0) Morir();
     }
-
-    public void Curar(int cura)
-    {
-        currentLife += cura;
-        if (currentLife > 100) currentLife = 100;
-        lifeText.text = "Life: " + currentLife.ToString();
-    }
-
     public void Morir()
     {
-        //muere
         Debug.Log("Has muerto");
-        //reinicia la escena
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
-
-    public void RecibirEscudo(int escudo)
-    {
-        currentShield += escudo;
-        if (currentShield < 0) currentShield = 0;
-        shieldText.text = "Shield: " + currentShield.ToString();
-    }
-
-    public int GetCurrrentLife()
+    public int GetCurrentLife()
     {
         return currentLife;
     }
-
     public int GetCurrentShield()
     {
         return currentShield;

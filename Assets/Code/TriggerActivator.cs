@@ -19,12 +19,5 @@ public class TriggerActivator : MonoBehaviour
             foreach (GameObject go in objects) { go.SetActive(true); }
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-     
-    }
 }
 

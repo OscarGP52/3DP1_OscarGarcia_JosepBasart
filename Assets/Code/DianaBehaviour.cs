@@ -44,11 +44,8 @@ public class DianaBehaviour : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bala"))
         {
-            //destruye la bala
             Destroy(other.gameObject);
-            //destruye a diana y animacion
             this.gameObject.SetActive(false);
-            //aumenta la puntuacion
             GameObject.Find("Score").GetComponent<ScoreSystem>().aumentarPuntuacion(1);
         }
     }

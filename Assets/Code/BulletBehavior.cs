@@ -138,7 +138,7 @@ public class BulletBehavior : MonoBehaviour
         }
         UpdateAmmoDisplay();
     }
-    private void UpdateAmmoDisplay()
+    public void UpdateAmmoDisplay()
     {
         if (ammoDisplay != null)
         {
