@@ -3,7 +3,7 @@ using TMPro;
 
 public class UIsystem : MonoBehaviour
 {
-
+    public BulletBehavior bullet;
     public PlayerController player;
     int scorePoints = 0; //prescindible
     public TextMeshProUGUI shieldText;
@@ -16,7 +16,7 @@ public class UIsystem : MonoBehaviour
         shieldText.text = "Shield: " + player.GetCurrentShield().ToString();
         lifeText.text = "Life: " + player.maxLife.ToString(); //hardcode
         scoreText.text = "Score: " + scorePoints.ToString();
-        //ammoText.text = "bullets / magazine"
+        UpdateAmmo(bullet.GetBulletsLeft(), bullet.GetMagSize());
     }
 
     public void UpdateShield(int shield)

@@ -140,9 +140,16 @@ public class BulletBehavior : MonoBehaviour
     }
     public void UpdateAmmoDisplay()
     {
-        if (ammoDisplay != null)
-        {
-            ammoDisplay.text = bulletsLeft + " / " + magSize;
-        }
+        GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateAmmo(bulletsLeft, magSize);
+    }
+
+    public int GetBulletsLeft()
+    {
+        return bulletsLeft;
+    }
+
+    public int GetMagSize()
+    {
+        return magSize;
     }
 }
