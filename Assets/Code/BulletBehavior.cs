@@ -47,7 +47,7 @@ public class BulletBehavior : MonoBehaviour
             shooting = Input.GetKeyDown(KeyCode.Mouse0);
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magSize && !reloading)
+        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < 10 && !reloading)
         {
             Reload();
         }
@@ -125,17 +125,14 @@ public class BulletBehavior : MonoBehaviour
     }
     private void ReloadFinished()
     {
-        bulletsLeft = magSize;
+        magSize = magSize - (10 - bulletsLeft);
+        bulletsLeft = 10;
         reloading = false;
     }
     
     public void addAmmo(int ammo)
     {
-        bulletsLeft += ammo;
-        if (bulletsLeft > magSize)
-        {
-            bulletsLeft = magSize;
-        }
+        magSize += ammo;
         UpdateAmmoDisplay();
     }
     public void UpdateAmmoDisplay()

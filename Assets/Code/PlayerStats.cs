@@ -27,9 +27,9 @@ public class PlayerStats : MonoBehaviour
                 player.RecibirEscudo(shieldPoints);
                 Destroy(this.gameObject);
             }
-            if (this.gameObject.CompareTag("Ammo"))
+            if (this.gameObject.CompareTag("Ammo") && !(GameObject.Find("Pistola").GetComponent<BulletBehavior>().GetMagSize() >= 100))
             {
-                //player.addammo;
+                GameObject.Find("Pistola").GetComponent<BulletBehavior>().addAmmo(10);
                 Destroy(this.gameObject);
             }
         }
