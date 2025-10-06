@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     float m_VerticalSpeed = 0.0f;
     private bool m_AngleLocked = false;
 
+    [Header("UI Requierements")]
     public UIsystem uiSystem;
 
     [Header("Player Stats")]
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
     public KeyCode m_DownKeyCode = KeyCode.S;
     public KeyCode m_JumpKeyCode = KeyCode.Space;
     public KeyCode m_RunKeyCode = KeyCode.LeftShift;
+    public KeyCode m_TakeDamage = KeyCode.K;
 
     [Header("Debug Imput")]
     public KeyCode m_DebugLockAngeleKeyCode = KeyCode.I;
@@ -58,6 +60,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(m_DebugLockAngeleKeyCode))
             m_AngleLocked = !m_AngleLocked;
 
+        if (Input.GetKeyDown(m_TakeDamage))
+            RecibirDaño(20);
+
         if (!m_AngleLocked)
         {
             m_Yaw = m_Yaw + l_MouseX * m_YawSpeed * Time.deltaTime * (m_UseInvertedYaw ? -1.0f : 1.0f);
@@ -73,6 +78,7 @@ public class PlayerController : MonoBehaviour
         Vector3 l_RightDirection = new Vector3(Mathf.Sin(l_YawPiRadians), 0.0f, Mathf.Cos(l_YawPiRadians));
         Vector3 l_ForwardDirection = new Vector3(Mathf.Sin(l_Yaw90piRadians), 0.0f, Mathf.Cos(l_Yaw90piRadians));
 
+        
 
         if (Input.GetKey(m_RightKeyCode))
             l_Movement = l_ForwardDirection;
@@ -88,6 +94,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(m_RunKeyCode))
             l_SpeedMultyplier = m_SpeedMultiplier;
+
 
         l_Movement.Normalize();
         l_Movement *= m_Speed * l_SpeedMultyplier * Time.deltaTime;

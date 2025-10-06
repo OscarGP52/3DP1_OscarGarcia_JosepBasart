@@ -3,8 +3,8 @@ using TMPro;
 
 public class UIsystem : MonoBehaviour
 {
-    
-    BulletBehavior bullet; //prescindible
+
+    public PlayerController player;
     int scorePoints = 0; //prescindible
     public TextMeshProUGUI shieldText;
     public TextMeshProUGUI lifeText;
@@ -13,11 +13,10 @@ public class UIsystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        shieldText.text = "Shield: " + GameObject.Find("Player").GetComponent<PlayerController>().GetCurrentShield().ToString();
-        lifeText.text = "Life: " + GameObject.Find("Player").GetComponent<PlayerController>().GetCurrentLife().ToString();
+        shieldText.text = "Shield: " + player.GetCurrentShield().ToString();
+        lifeText.text = "Life: " + player.maxLife.ToString(); //hardcode
         scoreText.text = "Score: " + scorePoints.ToString();
         //ammoText.text = "bullets / magazine"
-        bullet.UpdateAmmoDisplay();
     }
 
     public void UpdateShield(int shield)
