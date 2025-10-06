@@ -5,16 +5,17 @@ public class UIsystem : MonoBehaviour
 {
     
     BulletBehavior bullet; //prescindible
-    TextMeshProUGUI shieldText;
-    TextMeshProUGUI lifeText;
-    TextMeshProUGUI ammoText;
-    TextMeshProUGUI scoreText;
+    int scorePoints = 0; //prescindible
+    public TextMeshProUGUI shieldText;
+    public TextMeshProUGUI lifeText;
+    public TextMeshProUGUI ammoText;
+    public TextMeshProUGUI scoreText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         shieldText.text = "Shield: " + GameObject.Find("Player").GetComponent<PlayerController>().GetCurrentShield().ToString();
         lifeText.text = "Life: " + GameObject.Find("Player").GetComponent<PlayerController>().GetCurrentLife().ToString();
-        //scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Score: " + scorePoints.ToString();
         //ammoText.text = "bullets / magazine"
         bullet.UpdateAmmoDisplay();
     }
@@ -29,7 +30,8 @@ public class UIsystem : MonoBehaviour
     }
     public void UpdateScore(int score)
     {
-        scoreText.text = "Score: " + score;
+        scorePoints += score;
+        scoreText.text = "Score: " + scorePoints;
     }
     public void UpdateAmmo(int currentAmmo, int magazineSize)
     {

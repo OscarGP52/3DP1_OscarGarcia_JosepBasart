@@ -46,7 +46,7 @@ public class DianaBehaviour : MonoBehaviour
         {
             Destroy(other.gameObject);
             this.gameObject.SetActive(false);
-            GameObject.Find("Score").GetComponent<ScoreSystem>().aumentarPuntuacion(1);
+            GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateScore(1);
         }
     }
 }

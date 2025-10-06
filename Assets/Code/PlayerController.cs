@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
     public CharacterController m_CharacterController;
     float m_VerticalSpeed = 0.0f;
     private bool m_AngleLocked = false;
-    public TMPro.TextMeshProUGUI lifeText;
-    public TMPro.TextMeshProUGUI shieldText;
+
+    public UIsystem uiSystem;
 
     [Header("Player Stats")]
     public int maxLife;
@@ -44,10 +44,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        currentLife = maxLife -20;
+        currentLife = maxLife;
         currentShield = 0;
-        shieldText.text = "Shield: " + currentShield.ToString();
-        lifeText.text = "Life: " + currentLife.ToString();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -114,19 +112,19 @@ public class PlayerController : MonoBehaviour
     {
         currentShield += escudo;
         if (currentShield < 0) currentShield = 0;
-        shieldText.text = "Shield: " + currentShield.ToString();
+        uiSystem.UpdateShield(currentShield);
     }
     public void Curar(int cura)
     {
         currentLife += cura;
         if (currentLife > 100) currentLife = 100;
-        lifeText.text = "Life: " + currentLife.ToString();
+        uiSystem.UpdateLife(currentLife);
     }
     public void RecibirDaño(int daño)
     {
         currentLife -= daño;
         if (currentLife < 0) currentLife = 0;
-        lifeText.text = "Life: " + currentLife.ToString();
+        uiSystem.UpdateLife(currentLife);
         if (currentLife == 0) Morir();
     }
     public void Morir()
