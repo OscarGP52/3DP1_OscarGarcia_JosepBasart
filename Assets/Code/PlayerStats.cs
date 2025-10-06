@@ -9,6 +9,10 @@ public class PlayerStats : MonoBehaviour
     int shieldPoints = 20;
     int lifePoints = 20;
 
+    private void Start()
+    {
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

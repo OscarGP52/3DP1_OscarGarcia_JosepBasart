@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        currentLife = maxLife;
+        currentLife = maxLife -20;
         currentShield = 0;
         shieldText.text = "Shield: " + currentShield.ToString();
         lifeText.text = "Life: " + currentLife.ToString();
