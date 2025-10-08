@@ -3932,7 +3932,7 @@ Transform:
   - {fileID: 1476644521}
   - {fileID: 8561600684186757250}
   m_Father: {fileID: 330585546}
-  m_LocalEulerAnglesHint: {x: -232.18695, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -367.46637, y: 0, z: 0}
 --- !u!114 &2125263796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3948,7 +3948,7 @@ MonoBehaviour:
   bullet: {fileID: 434656768}
   force: 100
   upwardforce: 0
-  timeBetweenShooting: 0.2
+  timeBetweenShooting: 0.33
   spread: 0.1
   reloadTime: 2
   timeBetweenShots: 0
@@ -4045,7 +4045,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2125263795}
-  m_LocalEulerAnglesHint: {x: -0.21079558, y: 0.27473542, z: -0.6095935}
+  m_LocalEulerAnglesHint: {x: -29.310442, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

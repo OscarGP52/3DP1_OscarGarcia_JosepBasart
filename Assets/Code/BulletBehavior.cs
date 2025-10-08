@@ -111,6 +111,8 @@ public class BulletBehavior : MonoBehaviour
         {
             Invoke("Shoot", timeBetweenShots);
         }
+
+
     }
     private void ResetShot()
     {
