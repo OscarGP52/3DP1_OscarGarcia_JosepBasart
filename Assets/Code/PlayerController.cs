@@ -1,150 +1,92 @@
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    [Header("Player Vision")]
     float m_Yaw;
     float m_Pitch;
     public float m_YawSpeed;
     public float m_PitchSpeed;
     public float m_MinPitch;
     public float m_MaxPitch;
-    public Transform m_PitchCotroller;
+    public Transform m_PitchController;
     public bool m_UseInvertedYaw;
     public bool m_UseInvertedPitch;
     public CharacterController m_CharacterController;
-    float m_VerticalSpeed = 0.0f;
-    private bool m_AngleLocked = false;
+    float m_VerticalSpeed=0.0f;
 
-    [Header("UI Requierements")]
-    public UIsystem uiSystem;
-
-    [Header("Player Stats")]
-    public int maxLife;
-    int currentLife;
-    public int maxShield;
-    int currentShield;
+    bool m_AngleLocked=false;
     public float m_Speed;
     public float m_JumpSpeed;
     public float m_SpeedMultiplier;
 
     [Header("Input")]
-    public KeyCode m_RightKeyCode = KeyCode.D;
-    public KeyCode m_LeftKeyCode = KeyCode.A;
-    public KeyCode m_UpKeyCode = KeyCode.W;
-    public KeyCode m_DownKeyCode = KeyCode.S;
-    public KeyCode m_JumpKeyCode = KeyCode.Space;
-    public KeyCode m_RunKeyCode = KeyCode.LeftShift;
-    public KeyCode m_TakeDamage = KeyCode.K;
+    public KeyCode m_LeftKeycode=KeyCode.A;
+    public KeyCode m_RightKeycode=KeyCode.D;
+    public KeyCode m_UpKeycode=KeyCode.W;
+    public KeyCode m_DownKeycode=KeyCode.S;
+    public KeyCode m_JumpKeycode=KeyCode.Space;
+    public KeyCode m_RunKeycode=KeyCode.LeftShift;
 
-    [Header("Debug Imput")]
-    public KeyCode m_DebugLockAngeleKeyCode = KeyCode.I;
+    [Header("Debug Input")]
+    public KeyCode m_DebugLockAngleKeyCode=KeyCode.I;
 
     void Start()
     {
-        currentLife = maxLife;
-        currentShield = 0;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState=CursorLockMode.Locked;
     }
-
-    // Update is called once per frame
     void Update()
     {
-        float l_MouseX = Input.GetAxis("Mouse X");
-        float l_MouseY = Input.GetAxis("Mouse Y"); ;
+        float l_MouseX=Input.GetAxis("Mouse X");
+        float l_MouseY=Input.GetAxis("Mouse Y");
 
-        if (Input.GetKeyDown(m_DebugLockAngeleKeyCode))
-            m_AngleLocked = !m_AngleLocked;
+        if(Input.GetKeyDown(m_DebugLockAngleKeyCode))
+            m_AngleLocked=!m_AngleLocked;
 
-        if (Input.GetKeyDown(m_TakeDamage))
-            RecibirDaño(20);
-
-        if (!m_AngleLocked)
+        if(!m_AngleLocked)
         {
-            m_Yaw = m_Yaw + l_MouseX * m_YawSpeed * Time.deltaTime * (m_UseInvertedYaw ? -1.0f : 1.0f);
-            m_Pitch = m_Pitch + l_MouseY * m_PitchSpeed * Time.deltaTime * (m_UseInvertedPitch ? -1.0f : 1.0f);
-            m_Pitch = Mathf.Clamp(m_Pitch, m_MinPitch, m_MaxPitch);
-            transform.rotation = Quaternion.Euler(0.0f, m_Yaw, 0.0f);
-            m_PitchCotroller.localRotation = Quaternion.Euler(m_Pitch, 0.0f, 0.0f);
+            m_Yaw=m_Yaw+l_MouseX*m_YawSpeed*Time.deltaTime*(m_UseInvertedYaw ? -1.0f : 1.0f);
+            m_Pitch=m_Pitch+l_MouseY*m_PitchSpeed*Time.deltaTime*(m_UseInvertedPitch ? -1.0f : 1.0f);
+            m_Pitch=Mathf.Clamp(m_Pitch, m_MinPitch, m_MaxPitch);
+            transform.rotation=Quaternion.Euler(0.0f, m_Yaw, 0.0f);
+            m_PitchController.localRotation=Quaternion.Euler(m_Pitch, 0.0f, 0.0f);
         }
-
-        Vector3 l_Movement = Vector3.zero;
-        float l_YawPiRadians = m_Yaw * Mathf.Deg2Rad;
-        float l_Yaw90piRadians = (m_Yaw + 90.0f) * Mathf.Deg2Rad;
-        Vector3 l_RightDirection = new Vector3(Mathf.Sin(l_YawPiRadians), 0.0f, Mathf.Cos(l_YawPiRadians));
-        Vector3 l_ForwardDirection = new Vector3(Mathf.Sin(l_Yaw90piRadians), 0.0f, Mathf.Cos(l_Yaw90piRadians));
-
         
+        Vector3 l_Movement=Vector3.zero;
+        float l_YawPiRadians=m_Yaw*Mathf.Deg2Rad;
+        float l_Yaw90PiRadians=(m_Yaw+90.0f)*Mathf.Deg2Rad;
+        Vector3 l_ForwardDirection=new Vector3(Mathf.Sin(l_YawPiRadians), 0.0f, Mathf.Cos(l_YawPiRadians));
+        Vector3 l_RightDirection=new Vector3(Mathf.Sin(l_Yaw90PiRadians), 0.0f, Mathf.Cos(l_Yaw90PiRadians));
 
-        if (Input.GetKey(m_RightKeyCode))
-            l_Movement = l_ForwardDirection;
-        else if (Input.GetKey(m_LeftKeyCode))
-            l_Movement = -l_ForwardDirection;
+        if(Input.GetKey(m_RightKeycode))
+            l_Movement=l_RightDirection;
+		else if(Input.GetKey(m_LeftKeycode))
+            l_Movement=-l_RightDirection;
 
-        if (Input.GetKey(m_UpKeyCode))
-            l_Movement += l_RightDirection;
-        else if (Input.GetKey(m_DownKeyCode))
-            l_Movement -= l_RightDirection;
+        if(Input.GetKey(m_UpKeycode))
+            l_Movement+=l_ForwardDirection;
+		else if(Input.GetKey(m_DownKeycode))
+            l_Movement-=l_ForwardDirection;
 
-        float l_SpeedMultyplier = 1.0f;
+        float l_SpeedMultiplier=1.0f;
 
-        if (Input.GetKey(m_RunKeyCode))
-            l_SpeedMultyplier = m_SpeedMultiplier;
-
+        if(Input.GetKey(m_RunKeycode))
+            l_SpeedMultiplier=m_SpeedMultiplier;
 
         l_Movement.Normalize();
-        l_Movement *= m_Speed * l_SpeedMultyplier * Time.deltaTime;
-
-        m_VerticalSpeed = m_VerticalSpeed + Physics.gravity.y * Time.deltaTime;
-        l_Movement.y = m_VerticalSpeed * Time.deltaTime;
-
-        CollisionFlags l_CollissionFlags = m_CharacterController.Move(l_Movement);
-        if (m_VerticalSpeed < 0.0f && (l_CollissionFlags & CollisionFlags.Below) != 0)
+        l_Movement*=m_Speed*l_SpeedMultiplier*Time.deltaTime;
+        
+        m_VerticalSpeed=m_VerticalSpeed+Physics.gravity.y*Time.deltaTime;
+        l_Movement.y=m_VerticalSpeed*Time.deltaTime;
+        
+		CollisionFlags l_CollisionFlags=m_CharacterController.Move(l_Movement);
+        if(m_VerticalSpeed<0.0f && (l_CollisionFlags & CollisionFlags.Below)!=0) //si estoy cayendo y colisiono con el suelo
         {
-
-            m_VerticalSpeed = 0.0f;
-            if (Input.GetKeyDown(m_JumpKeyCode))
-                m_VerticalSpeed = m_JumpSpeed;
+            m_VerticalSpeed=0.0f;
+            if(Input.GetKeyDown(m_JumpKeycode))
+                m_VerticalSpeed=m_JumpSpeed;
         }
+        else if(m_VerticalSpeed>0.0f && (l_CollisionFlags & CollisionFlags.Above)!=0) //si estoy subiendo y colision con un techo
+            m_VerticalSpeed=0.0f;
 
-        else if (m_VerticalSpeed > 0.0f && (l_CollissionFlags & CollisionFlags.Above) != 0)
-            m_VerticalSpeed = 0.0f;
-    }
-
-    public void RecibirEscudo(int escudo)
-    {
-        currentShield += escudo;
-        if (currentShield < 0) currentShield = 0;
-        uiSystem.UpdateShield(currentShield);
-    }
-    public void Curar(int cura)
-    {
-        currentLife += cura;
-        if (currentLife > 100) currentLife = 100;
-        uiSystem.UpdateLife(currentLife);
-    }
-    public void RecibirDaño(int daño)
-    {
-        currentLife -= daño;
-        if (currentLife < 0) currentLife = 0;
-        uiSystem.UpdateLife(currentLife);
-        if (currentLife == 0) Morir();
-    }
-    public void Morir()
-    {
-        Debug.Log("Has muerto");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
-    public int GetCurrentLife()
-    {
-        return currentLife;
-    }
-    public int GetCurrentShield()
-    {
-        return currentShield;
     }
 }
