@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public bool m_UseInvertedPitch;
     public CharacterController m_CharacterController;
     float m_VerticalSpeed=0.0f;
+    Vector3 m_StartPosition;
+    Quaternion m_startRotation;
 
     bool m_AngleLocked=false;
     public float m_Speed;
@@ -26,13 +28,25 @@ public class PlayerController : MonoBehaviour
     public KeyCode m_DownKeycode=KeyCode.S;
     public KeyCode m_JumpKeycode=KeyCode.Space;
     public KeyCode m_RunKeycode=KeyCode.LeftShift;
+    public KeyCode m_GetDamage = KeyCode.K;
 
     [Header("Debug Input")]
     public KeyCode m_DebugLockAngleKeyCode=KeyCode.I;
 
+    [Header("PlayerStats")]
+    public int maxLife = 100;
+    int currentLife;
+    public int maxShield = 100;
+    int currentShield;
+
     void Start()
     {
+        /*esto va dentro de start() en un if de playercontroller
+        l_Player.m_StartRotation = Transform.rotation;
+        l_Player.m_StartPosition = Transform.position;*/
         Cursor.lockState=CursorLockMode.Locked;
+        currentLife = maxLife;
+        currentShield = 0;
     }
     void Update()
     {
@@ -88,5 +102,54 @@ public class PlayerController : MonoBehaviour
         else if(m_VerticalSpeed>0.0f && (l_CollisionFlags & CollisionFlags.Above)!=0) //si estoy subiendo y colision con un techo
             m_VerticalSpeed=0.0f;
 
+        //Prueva de daño
+        if (Input.GetKeyDown(m_GetDamage))
+        {
+            RecibirDaño(10);
+        }
+
+    }
+    public void Restart()
+    {
+        m_CharacterController.enabled = false;
+        transform.position = m_StartPosition;
+        transform.rotation = m_startRotation;
+        m_CharacterController.enabled = true;
+
+    }
+
+    public int GetCurrentShield()
+    {
+        return currentShield;
+    }
+
+    public int GetCurrentLife()
+    {
+        return currentLife;
+    }
+
+    public void RecibirEscudo(int cantidad)
+    {
+        currentShield += cantidad;
+        if (currentShield > maxShield)
+            currentShield = maxShield;
+        GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateShield(currentShield);
+    }
+    public void Curar(int cantidad)
+    {
+        currentLife += cantidad;
+        if (currentLife > maxLife)
+            currentLife = maxLife;
+        GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
+    }
+    public void RecibirDaño(int cantidad)
+    {   
+        currentLife -= cantidad;
+        if (currentLife <= 0)
+        {
+            currentLife = 0;
+            //aqui iria la muerte del jugador que lo haremos desde el GameManager
+        }
+        GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
     }
 }

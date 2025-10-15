@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     static GameManager m_GameManager;
     PlayerController m_Player;
+    UIsystem m_UI;
     public Transform m_DestroyObjects;
 
     private void Awake()
@@ -41,5 +42,9 @@ public class GameManager : MonoBehaviour
     public void SetPlayer(PlayerController Player)
     {
         m_Player = Player;
+    }
+    public void SetUI(UIsystem UI)
+    {
+        m_UI = UI;
     }
 }
