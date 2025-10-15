@@ -133,7 +133,18 @@ public class EnemyController : MonoBehaviour
         void UpdateAlertState()
         {
             // se queda quieto haciendo un barrido visual de 360 grados, si lo ve y no tiene distancia para pegar pasa a chase, si hay rango pasa a atack, si gira y no lo ve pasa a patrol UTILIZAR FUNCION SEESPLAYER
-
+            transform.rotation *= Quaternion.Euler(0, 120 * Time.deltaTime, 0); //ns como hacer que solo gire 360 grados
+            if (SeesPlayer())
+            {
+                Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPLayer().transform.position;
+                float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
+                if (l_Distance <= m_MinDistanceToAttack)
+                    SetAttackState();
+                else
+                    SetChaseState();
+            }
+            else
+                SetPatrolState();
         }
         void SetAttackState()
         {
@@ -170,16 +181,20 @@ public class EnemyController : MonoBehaviour
         void UpdateHitState()
         {
              //le dan un golpe, si muere pasa a die si no a alert
+             m_Life -= 10;
+             if (m_Life <= 0)
+                SetDieState();
+            else
+                SetPatrolState();
         }
         void SetDieState()
         {
             m_State = TState.DIE;
-            gameObject.SetActive(false);
         }
         void UpdateDieState()
         {
+            gameObject.SetActive(false);
             //se compurva la vida, si esta en 0 o menos muere y se desactiva
-
         }
 
 
