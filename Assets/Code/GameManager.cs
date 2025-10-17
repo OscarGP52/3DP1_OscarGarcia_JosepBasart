@@ -1,13 +1,13 @@
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class GameManager : MonoBehaviour
 {
     static GameManager m_GameManager;
     PlayerController m_Player;
     UIsystem m_UI;
     public Transform m_DestroyObjects;
+    public Fade m_Fade;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         return m_GameManager;
     }
-    public void ReloadLevel()
+    public void RestartLevel()
     {
         for (int i = 0; i < m_DestroyObjects.childCount; i++)
             GameObject.Destroy(m_DestroyObjects.GetChild(i).gameObject);

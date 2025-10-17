@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     float m_VerticalSpeed=0.0f;
     Vector3 m_StartPosition;
     Quaternion m_startRotation;
+    
 
     bool m_AngleLocked=false;
     public float m_Speed;
@@ -109,14 +111,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    public void Restart()
-    {
-        m_CharacterController.enabled = false;
-        transform.position = m_StartPosition;
-        transform.rotation = m_startRotation;
-        m_CharacterController.enabled = true;
-
-    }
 
     public int GetCurrentShield()
     {
@@ -151,5 +145,19 @@ public class PlayerController : MonoBehaviour
             //aqui iria la muerte del jugador que lo haremos desde el GameManager
         }
         GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
+    }
+
+    void Kill()
+    {
+        GameManager.GetGameManager().m_Fade.FadeIn(() => { 
+            GameManager.GetGameManager().RestartLevel(); });
+    }
+
+    public void Restart()
+    {
+        m_CharacterController.enabled = false;
+        transform.position = m_StartPosition;
+        transform.rotation = m_startRotation;
+        m_CharacterController.enabled = true;
     }
 }
