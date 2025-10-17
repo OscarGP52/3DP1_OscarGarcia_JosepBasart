@@ -21,17 +21,20 @@ public class BulletBehavior : MonoBehaviour
     public GameObject fogonazo;
     public TextMeshProUGUI ammoDisplay;
 
+    public CPoolElements m_BulletPool;
+
     public bool allowinvoke = true;
 
     public void Awake()
     {
         bulletsLeft = magSize;
         readyToShoot = true;
-
+        m_BulletPool = new CPoolElements();
     }
 
     public void Update()
     {
+        m_BulletPool.Init(10, bullet);
         MyInput();
         UpdateAmmoDisplay();
     }

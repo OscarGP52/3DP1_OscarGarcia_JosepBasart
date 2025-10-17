@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     static GameManager m_GameManager;
-    PlayerController m_Player;
+    public PlayerController m_Player;
     UIsystem m_UI;
     public Transform m_DestroyObjects;
     public Fade m_Fade;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SceneManager.LoadSceneAsync("Level2Scene");
     }
-    public PlayerController GetPLayer()
+    public PlayerController GetPlayer()
     {
         return m_Player;
     }

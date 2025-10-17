@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     float m_VerticalSpeed=0.0f;
     Vector3 m_StartPosition;
     Quaternion m_startRotation;
+    public Camera m_Camera;
     
 
     bool m_AngleLocked=false;

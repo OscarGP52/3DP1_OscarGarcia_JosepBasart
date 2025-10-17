@@ -1,15 +1,15 @@
 using Microsoft.Unity.VisualStudio.Editor;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class LifeBarElementUI :MonoBehaviour
 {
     public RectTransform m_LifeBarUIRectTransform;
-    public Image m_ForegraoundLifeBarUI;
+    public UnityEngine.UI.Image m_ForegraoundLifeBarUI;
 
     public void Show (Vector3 WoldPosition, float LifePct)
     {
-        Vector3 l_LifeBarViewportPosition = GameManager.GetGameManager.GetPlayer().m_Camera.WorldToViewportPoint(WorldPosition);
+        Vector3 l_LifeBarViewportPosition = GameManager.GetGameManager().GetPlayer().m_Camera.WorldToViewportPoint(WoldPosition);
         if (l_LifeBarViewportPosition.z > 0.0f)
         {
             Vector2 l_PositionUI = new Vector2(l_LifeBarViewportPosition.x * 1920.0f, -(1.0f - l_LifeBarViewportPosition.y) * 1080.0f);

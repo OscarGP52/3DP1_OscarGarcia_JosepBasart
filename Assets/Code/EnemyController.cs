@@ -8,36 +8,6 @@ using UnityEngine.AI;
 
 
 
-    /*
-    //Esto es AmmoItem : Item
-    public int m_AmmoCount;
-
-    public virtual void Pick()
-    {
-        base.Pick();
-        GameManager.GetGameManager().GetPLayer().AddAmmo(m_AmmoCount);
-    }
-
-    public override bool CanPick()
-    {
-        return true;
-    }
-
-    //Esto va en PlayerController
-
-    public void AddAmmo()
-    {
-        m_AmmoCount += Ammo;
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Item"))
-        {
-            Item l_Item = other.GetComponent<Item>();
-            if (l_Item.CanPick())
-                l_Item.Pick();
-        }
-    }*/
 public class EnemyController : MonoBehaviour
 {
     enum TState
@@ -58,7 +28,7 @@ public class EnemyController : MonoBehaviour
     public Transform m_Target;
 
     [Header("Distances")]
-    public float m_MinDistanceToAttack = 5.0f;
+    public float m_MinDistanceToAttack = 2.0f;
 
     [Header("Patrol")]
     public List<Transform> m_PatrolPosition;
@@ -109,11 +79,16 @@ public class EnemyController : MonoBehaviour
         }
 
         UpdateLifeBarUI();
+        
     }
 
     void UpdateLifeBarUI()
     {
         m_LifeBarElementUI.Show(m_LifeBarTransform.position, m_Life/(float)m_MaxLife);
+    }
+    private void Awake()
+    {
+        m_NavMeshAgent = GetComponent<NavMeshAgent>();
     }
     private void Start()
     {
@@ -147,12 +122,12 @@ public class EnemyController : MonoBehaviour
         void UpdateAlertState()
         {
             // se queda quieto haciendo un barrido visual de 360 grados, si lo ve y no tiene distancia para pegar pasa a chase, si hay rango pasa a atack, si gira y no lo ve pasa a patrol UTILIZAR FUNCION SEESPLAYER
-            transform.rotation *= Quaternion.Euler(0, 120 * Time.deltaTime, 0); //ns como hacer que solo gire 360 grados
-            if (SeesPlayer())
+            //transform.rotation *= Quaternion.Euler(0, 120 * Time.deltaTime, 0); ns como hacer que solo gire 360 grados
+            if (SeesPlayer())// y ha dado justo una vuelta)
             {
-                Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPLayer().transform.position;
+                Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
                 float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
-                if (l_Distance <= m_MinDistanceToAttack)
+                if (l_Distance < m_MinDistanceToAttack)
                     SetAttackState();
                 else
                     SetChaseState();
@@ -166,9 +141,8 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateAttackState()
         {
-            //comprueva si tiene rango de ataque, si no lo tiene pasa a chase si lo tiene efectua hit
-            GameManager.GetGameManager().GetPLayer().RecibirDaño(10);
-            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPLayer().transform.position;
+            GameManager.GetGameManager().GetPlayer().RecibirDaño(10);
+            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
             if (l_Distance > m_MinDistanceToAttack)
                 SetChaseState();
@@ -179,27 +153,21 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateChaseState()
         {
-            //lo persigue, comprueva el rango de ataque y si lo tiene pasa a attack
             SetNextChasePossition();
-            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPLayer().transform.position;
+            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
             if (l_Distance <= m_MinDistanceToAttack)
             {
                 SetAttackState();
             }
         }
-        void SetHitState()
+        public void SetHitState()
         {
             m_State = TState.HIT;
         }
         void UpdateHitState()
         {
-             //le dan un golpe, si muere pasa a die si no a alert
-             m_Life -= 10;
-             if (m_Life <= 0)
-                SetDieState();
-            else
-                SetPatrolState();
+            SetAlertState();
         }
         void SetDieState()
         {
@@ -208,13 +176,12 @@ public class EnemyController : MonoBehaviour
         void UpdateDieState()
         {
             gameObject.SetActive(false);
-            //se compurva la vida, si esta en 0 o menos muere y se desactiva
         }
 
 
         void SetNextChasePossition()
         {
-            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPLayer().transform.position;
+            Vector3 l_PlayerPossition = m_Target.transform.position;
             Vector3 l_Direction = l_PlayerPossition - transform.position;
             l_Direction.Normalize();
             Vector3 l_Position = l_PlayerPossition - l_Direction * m_MinDistanceToAttack;
@@ -230,7 +197,7 @@ public class EnemyController : MonoBehaviour
         }
         bool SeesPlayer()
         {
-            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPLayer().transform.position;
+            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             Vector3 l_Direction = l_PlayerPossition - transform.position;
             float l_Distance = l_Direction.magnitude;
             //l_Direction.Normalize();
@@ -246,7 +213,7 @@ public class EnemyController : MonoBehaviour
         }
         bool HearsPlayer()
         {
-            Vector3 l_PlayerPossition = GameObject.Find("Player").GetComponent<PlayerController>().transform.position;
+            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
             return l_Distance < m_MaxEarDistance;
         }
@@ -255,16 +222,42 @@ public class EnemyController : MonoBehaviour
             m_Life -= Damage;
             if (m_Life < 0)
                 SetDieState();
+            else
+            SetHitState();
         }
-        /* public class HitCollider : Monobehaviour
 
-        public int m_Damage;
-        public EnemyController m_Enemy;
 
-        public void Hit()
+    /*
+    //Esto es AmmoItem : Item
+    public int m_AmmoCount;
+
+    public virtual void Pick()
+    {
+        base.Pick();
+        GameManager.GetGameManager().GetPLayer().AddAmmo(m_AmmoCount);
+    }
+
+    public override bool CanPick()
+    {
+        return true;
+    }
+
+    //Esto va en PlayerController
+
+    public void AddAmmo()
+    {
+        m_AmmoCount += Ammo;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
         {
-            m_Enemy.Hit(m_Damage);
-        }*/
+            Item l_Item = other.GetComponent<Item>();
+            if (l_Item.CanPick())
+                l_Item.Pick();
+        }
+    }*/
+       
         // Esto va dentro de Shoot() em playercontroller
         //
         //  if(l_RaycastHit.collider.CompareTag("HitCollider"))

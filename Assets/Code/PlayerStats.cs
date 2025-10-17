@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (this.gameObject.CompareTag("Life") && !(GameManager.GetGameManager().GetPLayer().GetCurrentLife() >= player.maxLife))
+            if (this.gameObject.CompareTag("Life") && !(GameManager.GetGameManager().GetPlayer().GetCurrentLife() >= player.maxLife))
             {
                 player.Curar(lifePoints);
                 Destroy(this.gameObject);
