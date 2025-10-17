@@ -40,71 +40,85 @@ using UnityEngine.AI;
     }*/
 public class EnemyController : MonoBehaviour
 {
-        enum TState
+    enum TState
+    {
+        IDLE = 0,
+        PATROL,
+        ALERT,
+        ATTACK,
+        CHASE,
+        HIT,
+        DIE
+    }
+
+    TState m_State;
+
+    NavMeshAgent m_NavMeshAgent;
+
+    public Transform m_Target;
+
+    [Header("Distances")]
+    public float m_MinDistanceToAttack = 5.0f;
+
+    [Header("Patrol")]
+    public List<Transform> m_PatrolPosition;
+    int m_CurrentPatrolPossitionId = 0;
+
+    [Header("Sight")]
+    public float m_SightAngle = 60;
+    public LayerMask m_SightLayerMask;
+    public float m_EyesHeight = 1.8f;
+
+    [Header("Ears")]
+    public float m_MaxEarDistance = 3.0f;
+
+    [Header("Life")]
+    public int m_Life = 50;
+    public int m_MaxLife = 50;
+
+    [Header("LifeBar")]
+    public Transform m_LifeBarTransform;
+    public LifeBarElementUI m_LifeBarElementUI;
+
+
+    private void Update()
+    {
+        switch (m_State)
         {
-            IDLE = 0,
-            PATROL,
-            ALERT,
-            ATTACK,
-            CHASE,
-            HIT,
-            DIE
+            case TState.IDLE:
+                UpdateIdleState();
+                break;
+            case TState.ALERT:
+                UpdateAlertState();
+                break;
+            case TState.PATROL:
+                UpdatePatrolState();
+                break;
+            case TState.ATTACK:
+                UpdateAttackState();
+                break;
+            case TState.CHASE:
+                UpdateChaseState();
+                break;
+            case TState.HIT:
+                UpdateHitState();
+                break;
+            case TState.DIE:
+                UpdateDieState();
+                break;
         }
 
-        TState m_State;
+        UpdateLifeBarUI();
+    }
 
-        NavMeshAgent m_NavMeshAgent;
-
-        public Transform m_Target;
-
-        [Header("Distances")]
-        public float m_MinDistanceToAttack = 5.0f;
-
-        [Header("Patrol")]
-        public List<Transform> m_PatrolPosition;
-        int m_CurrentPatrolPossitionId = 0;
-
-        [Header("Sight")]
-        public float m_SightAngle = 60;
-        public LayerMask m_SightLayerMask;
-        public float m_EyesHeight = 1.8f;
-
-        [Header("Ears")]
-        public float m_MaxEarDistance = 3.0f;
-
-
-        private void Update()
-        {
-            switch (m_State)
-            {
-                case TState.IDLE:
-                    UpdateIdleState();
-                    break;
-                case TState.ALERT:
-                    UpdateAlertState();
-                    break;
-                case TState.PATROL:
-                    UpdatePatrolState();
-                    break;
-                case TState.ATTACK:
-                    UpdateAttackState();
-                    break;
-                case TState.CHASE:
-                    UpdateChaseState();
-                    break;
-                case TState.HIT:
-                    UpdateHitState();
-                    break;
-                case TState.DIE:
-                    UpdateDieState();
-                    break;
-            }
-        }
-
-        private void Start()
-        {
-            SetIdleState();
-        }
+    void UpdateLifeBarUI()
+    {
+        m_LifeBarElementUI.Show(m_LifeBarTransform.position, m_Life/(float)m_MaxLife);
+    }
+    private void Start()
+    {
+        SetIdleState();
+    }
         void SetIdleState()
         {
             m_State = TState.IDLE;
@@ -236,7 +250,6 @@ public class EnemyController : MonoBehaviour
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
             return l_Distance < m_MaxEarDistance;
         }
-        public int m_Life = 50;
         public void Hit(int Damage)
         {
             m_Life -= Damage;
