@@ -42,6 +42,10 @@ public class EnemyController : MonoBehaviour
     [Header("Ears")]
     public float m_MaxEarDistance = 3.0f;
 
+    [Header("Cooldowns")]
+    int m_CooldownToAttack = 0;
+    public int m_MaxCooldownToAttack = 1000;
+
     [Header("Life")]
     public int m_Life = 50;
     public int m_MaxLife = 50;
@@ -78,14 +82,14 @@ public class EnemyController : MonoBehaviour
                 break;
         }
 
-        UpdateLifeBarUI();
-        
+        //UpdateLifeBarUI();
+        m_CooldownToAttack++;
     }
 
-    void UpdateLifeBarUI()
+    /*void UpdateLifeBarUI()
     {
         m_LifeBarElementUI.Show(m_LifeBarTransform.position, m_Life/(float)m_MaxLife);
-    }
+    }*/
     private void Awake()
     {
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
@@ -99,7 +103,7 @@ public class EnemyController : MonoBehaviour
             m_State = TState.IDLE;
         }
         void UpdateIdleState()
-        {
+        {   
             SetPatrolState();
         }
         void SetPatrolState()
@@ -110,6 +114,7 @@ public class EnemyController : MonoBehaviour
         }
         void UpdatePatrolState()
         {
+            Debug.Log("PATROL STATE");
             if (!m_NavMeshAgent.hasPath && m_NavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
                 MoveToNextPatrolPosition();
             if (HearsPlayer())
@@ -123,14 +128,11 @@ public class EnemyController : MonoBehaviour
         {
             // se queda quieto haciendo un barrido visual de 360 grados, si lo ve y no tiene distancia para pegar pasa a chase, si hay rango pasa a atack, si gira y no lo ve pasa a patrol UTILIZAR FUNCION SEESPLAYER
             //transform.rotation *= Quaternion.Euler(0, 120 * Time.deltaTime, 0); ns como hacer que solo gire 360 grados
+            Debug.Log("ALERT STATE");   
+            m_NavMeshAgent.destination = transform.position;
             if (SeesPlayer())// y ha dado justo una vuelta)
             {
-                Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
-                float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
-                if (l_Distance < m_MinDistanceToAttack)
-                    SetAttackState();
-                else
-                    SetChaseState();
+                SetChaseState();
             }
             else
                 SetPatrolState();
@@ -141,11 +143,9 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateAttackState()
         {
+            m_CooldownToAttack = 0;
             GameManager.GetGameManager().GetPlayer().RecibirDaño(10);
-            Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
-            float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
-            if (l_Distance > m_MinDistanceToAttack)
-                SetChaseState();
+            SetChaseState();
         }
         void SetChaseState()
         {
@@ -153,10 +153,11 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateChaseState()
         {
+            Debug.Log("CHASE STATE");
             SetNextChasePossition();
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
-            if (l_Distance <= m_MinDistanceToAttack)
+            if (l_Distance <= m_MinDistanceToAttack && m_CooldownToAttack >= m_MaxCooldownToAttack)
             {
                 SetAttackState();
             }
@@ -197,6 +198,7 @@ public class EnemyController : MonoBehaviour
         }
         bool SeesPlayer()
         {
+            Debug.Log("Sees Player");
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             Vector3 l_Direction = l_PlayerPossition - transform.position;
             float l_Distance = l_Direction.magnitude;
@@ -213,6 +215,7 @@ public class EnemyController : MonoBehaviour
         }
         bool HearsPlayer()
         {
+            Debug.Log("Hears Player");
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
             return l_Distance < m_MaxEarDistance;
@@ -220,10 +223,13 @@ public class EnemyController : MonoBehaviour
         public void Hit(int Damage)
         {
             m_Life -= Damage;
-            if (m_Life < 0)
+            if (m_Life <= 0)
+            {
+                m_Life = 0;
                 SetDieState();
+            }
             else
-            SetHitState();
+                SetHitState();
         }
 
 
@@ -257,19 +263,19 @@ public class EnemyController : MonoBehaviour
                 l_Item.Pick();
         }
     }*/
-       
-        // Esto va dentro de Shoot() em playercontroller
-        //
-        //  if(l_RaycastHit.collider.CompareTag("HitCollider"))
-        //      l_RayCastHit.collider.GetCComponent<HitCollider>().Hit();
-        //  else
-        //  CreateShootParticles(.......)
+
+    // Esto va dentro de Shoot() em playercontroller
+    //
+    //  if(l_RaycastHit.collider.CompareTag("HitCollider"))
+    //      l_RayCastHit.collider.GetCComponent<HitCollider>().Hit();
+    //  else
+    //  CreateShootParticles(.......)
 
 
-        //esto va en PlayerController
-        
+    //esto va en PlayerController
 
-       
-        
+
+
+
 }
 

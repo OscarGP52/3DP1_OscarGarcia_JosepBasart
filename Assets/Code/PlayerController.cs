@@ -143,12 +143,13 @@ public class PlayerController : MonoBehaviour
         if (currentLife <= 0)
         {
             currentLife = 0;
+            Die();
             //aqui iria la muerte del jugador que lo haremos desde el GameManager
         }
         GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
     }
 
-    void Kill()
+    void Die()
     {
         GameManager.GetGameManager().m_Fade.FadeIn(() => { 
             GameManager.GetGameManager().RestartLevel(); });

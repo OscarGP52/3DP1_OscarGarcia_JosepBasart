@@ -12,8 +12,9 @@ public class HitCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (CompareTag("Bala"))
+        if (other.gameObject.CompareTag("Bala"))
         {
+            Debug.Log("HitCollider: Hit by bullet");
             m_Enemy.Hit(m_Damage);
         }
     }
