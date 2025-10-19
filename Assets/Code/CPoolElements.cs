@@ -22,10 +22,12 @@ public class CPoolElements
     {
 
         GameObject l_GameObject = m_Elements[m_CurrentElementsId];
+        l_GameObject.SetActive(true);
         ++m_CurrentElementsId;
         if(m_CurrentElementsId>=m_Elements.Count)
             m_CurrentElementsId = 0;
         return l_GameObject;
+        
 
     }
 }
