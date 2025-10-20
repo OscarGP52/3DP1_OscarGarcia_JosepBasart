@@ -93,6 +93,7 @@ public class TriggerActivator : MonoBehaviour
 
     private void Next()
     {
+        ControlTime = 0f;
         objects[y].SetActive(true);
     }
 }
