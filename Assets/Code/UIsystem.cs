@@ -9,12 +9,12 @@ public class UIsystem : MonoBehaviour
     public TextMeshProUGUI lifeText;
     public TextMeshProUGUI ammoText;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() 
     {
         shieldText.text = "Shield: " + GameManager.GetGameManager().GetPlayer().GetCurrentShield().ToString();
         lifeText.text = "Life: " + GameManager.GetGameManager().GetPlayer().maxLife.ToString(); //hardcode
-        scoreText.text = "Score: " + scorePoints.ToString();
         UpdateAmmo(bullet.GetBulletsLeft(), bullet.GetMagSize());
     }
 
@@ -34,6 +34,29 @@ public class UIsystem : MonoBehaviour
     public void UpdateAmmo(int currentAmmo, int magazineSize)
     {
         ammoText.text = currentAmmo + " / " + magazineSize;
+    }
+    public void UpdateTimer(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60F);
+        int seconds = Mathf.FloorToInt(time - minutes * 60);
+        timerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
+    }
+    public void PhaseCompleted()
+    {
+        timerText.text = "Congratulations";
+    }
+    public void StopTimer()
+    {
+        timerText.text = "Out of Time";
+    }
+    public void EraseTimer()
+    {
+        timerText.text = "";
+    }
+    public void EraseScore()
+    {
+        scorePoints = 0;
+        scoreText.text = "";
     }
 }
 

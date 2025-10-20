@@ -114,7 +114,7 @@ public class EnemyController : MonoBehaviour
         }
         void UpdatePatrolState()
         {
-            Debug.Log("PATROL STATE");
+            //Debug.Log("PATROL STATE");
             if (!m_NavMeshAgent.hasPath && m_NavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
                 MoveToNextPatrolPosition();
             if (HearsPlayer())
@@ -128,7 +128,7 @@ public class EnemyController : MonoBehaviour
         {
             // se queda quieto haciendo un barrido visual de 360 grados, si lo ve y no tiene distancia para pegar pasa a chase, si hay rango pasa a atack, si gira y no lo ve pasa a patrol UTILIZAR FUNCION SEESPLAYER
             //transform.rotation *= Quaternion.Euler(0, 120 * Time.deltaTime, 0); ns como hacer que solo gire 360 grados
-            Debug.Log("ALERT STATE");   
+            //Debug.Log("ALERT STATE");   
             m_NavMeshAgent.destination = transform.position;
             if (SeesPlayer())// y ha dado justo una vuelta)
             {
@@ -153,7 +153,7 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateChaseState()
         {
-            Debug.Log("CHASE STATE");
+            //Debug.Log("CHASE STATE");
             SetNextChasePossition();
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
@@ -198,7 +198,7 @@ public class EnemyController : MonoBehaviour
         }
         bool SeesPlayer()
         {
-            Debug.Log("Sees Player");
+            //Debug.Log("Sees Player");
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             Vector3 l_Direction = l_PlayerPossition - transform.position;
             float l_Distance = l_Direction.magnitude;
@@ -215,7 +215,7 @@ public class EnemyController : MonoBehaviour
         }
         bool HearsPlayer()
         {
-            Debug.Log("Hears Player");
+            //Debug.Log("Hears Player");
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
             return l_Distance < m_MaxEarDistance;
