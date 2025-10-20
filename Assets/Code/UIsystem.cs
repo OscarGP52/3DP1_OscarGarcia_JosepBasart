@@ -18,11 +18,11 @@ public class UIsystem : MonoBehaviour
         UpdateAmmo(bullet.GetBulletsLeft(), bullet.GetMagSize());
     }
 
-    public void UpdateShield(int shield)
+    public void UpdateShield(float shield)
     {
         shieldText.text = "Shield: " + shield;
     }
-    public void UpdateLife(int life)
+    public void UpdateLife(float life)
     {
         lifeText.text = "Life: " + life;
     }

@@ -37,10 +37,10 @@ public class PlayerController : MonoBehaviour
     public KeyCode m_DebugLockAngleKeyCode=KeyCode.I;
 
     [Header("PlayerStats")]
-    public int maxLife = 100;
-    int currentLife;
-    public int maxShield = 100;
-    int currentShield;
+    public float maxLife = 100f;
+    float currentLife;
+    public float maxShield = 100;
+    float currentShield;
 
     void Start()
     {
@@ -113,12 +113,12 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public int GetCurrentShield()
+    public float GetCurrentShield()
     {
         return currentShield;
     }
 
-    public int GetCurrentLife()
+    public float GetCurrentLife()
     {
         return currentLife;
     }
@@ -138,15 +138,28 @@ public class PlayerController : MonoBehaviour
         GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
     }
     public void RecibirDaño(int cantidad)
-    {   
-        currentLife -= cantidad;
-        if (currentLife <= 0)
+    {
+        if (currentShield > 0)
         {
-            currentLife = 0;
-            Die();
-            //aqui iria la muerte del jugador que lo haremos desde el GameManager
+            currentShield -= (cantidad * 0.75f);
+            currentLife -= (cantidad * 0.25f);
+            if (currentShield < 0)
+                currentShield = 0;
+            GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateShield(currentShield);
+            GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
         }
-        GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
+        else
+        {
+            currentLife -= cantidad;
+            if (currentLife < 0)
+            {
+                currentLife = 0;
+                //Die();
+                //aqui iria la muerte del jugador que lo haremos desde el GameManager
+            }
+            GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
+        }
+        
     }
 
     void Die()
