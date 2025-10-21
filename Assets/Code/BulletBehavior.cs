@@ -30,6 +30,7 @@ public class BulletBehavior : MonoBehaviour
         bulletsLeft = magSize;
         readyToShoot = true;
         m_BulletPool = new CPoolElements();
+        magSize = 10;
     }
 
     public void Update()
@@ -50,7 +51,7 @@ public class BulletBehavior : MonoBehaviour
             shooting = Input.GetKeyDown(KeyCode.Mouse0);
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < 10 && !reloading)
+        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < 10 && magSize >0 && !reloading)
         {
             Reload();
         }
@@ -130,9 +131,19 @@ public class BulletBehavior : MonoBehaviour
     }
     private void ReloadFinished()
     {
-        magSize = magSize - (10 - bulletsLeft);
-        bulletsLeft = 10;
-        reloading = false;
+        int bulletsToLoad = 10 - bulletsLeft;
+        magSize -= bulletsToLoad;
+        if (magSize < 0)
+        {
+            bulletsLeft += bulletsToLoad + magSize;
+            magSize = 0;
+            reloading = false;
+        }
+        else
+        {
+            bulletsLeft += bulletsToLoad;
+            reloading = false;
+        }
     }
     
     public void addAmmo(int ammo)
