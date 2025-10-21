@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     Vector3 m_StartPosition;
     Quaternion m_startRotation;
     public Camera m_Camera;
-    
+
 
     bool m_AngleLocked=false;
     public float m_Speed;
@@ -161,6 +161,8 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+
 
     void Die()
     {

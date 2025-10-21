@@ -6,10 +6,12 @@ using UnityEngine.Rendering.Universal;
 public class BulletBehavior : MonoBehaviour
 {
     [Header("Bullet Stats")]
-    public float force, upwardforce;
-    public float timeBetweenShooting, spread, reloadTime, timeBetweenShots;
+    public float force;
+    public float timeBetweenShooting, reloadTime, timeBetweenShots;
     public int magSize, bulletsPerClik;
     public bool allowbuttonhold;
+    public float m_MaxShootDist;
+    public LayerMask m_ShootLayerMask;
 
     int bulletsLeft, bulletsShot;
 
@@ -19,13 +21,13 @@ public class BulletBehavior : MonoBehaviour
     public GameObject bullet;
     public Camera main_Camera;
     public Transform objectivePoint;
+    public GameObject m_ShootParticles;
 
     public Animation m_Animation;
     public AnimationClip m_ReloadAnimationClip;
     public AnimationClip m_ShootAnimationClip;
     public AnimationClip m_IdleAnimationClip;
 
-    public GameObject fogonazo;
     public TextMeshProUGUI ammoDisplay;
 
     public CPoolElements m_BulletPool;
@@ -80,55 +82,59 @@ public class BulletBehavior : MonoBehaviour
     private void Shoot()
     {
         SetShootingAnimation();
-        readyToShoot = false;
+        /* readyToShoot = false;
 
-        Ray ray = main_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
+         Ray ray = main_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+         RaycastHit hit;
 
-        Vector3 targetPoint;
-        if (Physics.Raycast(ray, out hit))
+         Vector3 targetPoint;
+         if (Physics.Raycast(ray, out hit))
+         {
+             targetPoint = hit.point;
+         }
+         else
+         {
+             targetPoint = ray.GetPoint(100);
+         }
+
+         Vector3 direction = (targetPoint - objectivePoint.position).normalized;
+
+         GameObject currentBullet = Instantiate(bullet, objectivePoint.position, Quaternion.identity);
+         currentBullet.transform.forward = direction;
+         currentBullet.GetComponent<Rigidbody>().AddForce(direction * force, ForceMode.Impulse);
+
+
+
+         bulletsLeft--;
+         bulletsShot++;
+
+         if (allowinvoke)
+         {
+             Invoke("ResetShot", timeBetweenShooting);
+             allowinvoke = false;
+         }
+         if(bulletsShot < bulletsPerClik && bulletsLeft > 0)
+         {
+             Invoke("Shoot", timeBetweenShots);
+         }*/
+        Ray l_Ray = main_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+        if (Physics.Raycast(l_Ray, out RaycastHit l_RaycastHit, m_MaxShootDist, m_ShootLayerMask))
         {
-            targetPoint = hit.point;
+            CreateShootHitParticles(l_RaycastHit.point, l_RaycastHit.normal);
+
         }
-        else
-        {
-            targetPoint = ray.GetPoint(100);
-        }
-
-        Vector3 directionWithoutSpread = targetPoint - objectivePoint.position;
-
-        float x = Random.Range(-spread, spread);
-        float y = Random.Range(-spread, spread);
-
-        Vector3 directionWithSpread = directionWithoutSpread + new Vector3(x, y, 0);
-
-        GameObject currentBullet = Instantiate(bullet, objectivePoint.position, Quaternion.identity );
-
-        currentBullet.transform.forward = directionWithSpread.normalized;
-
-        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * force, ForceMode.Impulse);
-        currentBullet.GetComponent<Rigidbody>().AddForce(main_Camera.transform.up* upwardforce, ForceMode.Impulse);
-
-        if(fogonazo != null)
-        {
-            Instantiate(fogonazo, objectivePoint.position, Quaternion.identity);
-        }
-
-        bulletsLeft--;
-        bulletsShot++;
-
-        if (allowinvoke)
-        {
-            Invoke("ResetShot", timeBetweenShooting);
-            allowinvoke = false;
-        }
-        if(bulletsShot < bulletsPerClik && bulletsLeft > 0)
-        {
-            Invoke("Shoot", timeBetweenShots);
-        }
-
 
     }
+
+    private void CreateShootHitParticles(Vector3 Position, Vector3 Normal)
+    {
+        GameObject.Instantiate(m_ShootParticles);
+        m_ShootParticles.transform.position = Position;
+        m_ShootParticles.transform.rotation = Quaternion.LookRotation(-Normal);
+        m_ShootParticles.SetActive(true);
+    }
+
     private void ResetShot()
     {
         readyToShoot = true;
@@ -185,7 +191,7 @@ public class BulletBehavior : MonoBehaviour
             m_Animation.CrossFade(m_IdleAnimationClip.name, 0.19f);
         }
     }
-
+        
     public int GetBulletsLeft()
     {
         return bulletsLeft;
