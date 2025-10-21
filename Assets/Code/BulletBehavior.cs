@@ -1,11 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Runtime.CompilerServices;
+using UnityEngine.Rendering.Universal;
 
 public class BulletBehavior : MonoBehaviour
 {
-    public GameObject bullet;
-
+    [Header("Bullet Stats")]
     public float force, upwardforce;
     public float timeBetweenShooting, spread, reloadTime, timeBetweenShots;
     public int magSize, bulletsPerClik;
@@ -15,8 +15,15 @@ public class BulletBehavior : MonoBehaviour
 
     bool shooting, readyToShoot, reloading;
 
+    [Header("Dependencies")]
+    public GameObject bullet;
     public Camera main_Camera;
     public Transform objectivePoint;
+
+    public Animation m_Animation;
+    public AnimationClip m_ReloadAnimationClip;
+    public AnimationClip m_ShootAnimationClip;
+    public AnimationClip m_IdleAnimationClip;
 
     public GameObject fogonazo;
     public TextMeshProUGUI ammoDisplay;
@@ -32,9 +39,12 @@ public class BulletBehavior : MonoBehaviour
         m_BulletPool = new CPoolElements();
         magSize = 10;
     }
-
     public void Update()
     {
+        if (!shooting && !reloading)
+        {
+            SetIdleAnimation();
+        }
         m_BulletPool.Init(10, bullet);
         MyInput();
         UpdateAmmoDisplay();
@@ -69,6 +79,7 @@ public class BulletBehavior : MonoBehaviour
 
     private void Shoot()
     {
+        SetShootingAnimation();
         readyToShoot = false;
 
         Ray ray = main_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -126,6 +137,7 @@ public class BulletBehavior : MonoBehaviour
 
     private void Reload()
     {
+        SetReloadingAnimation();
         reloading= true;
         Invoke("ReloadFinished",reloadTime);
     }
@@ -154,6 +166,24 @@ public class BulletBehavior : MonoBehaviour
     public void UpdateAmmoDisplay()
     {
         GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateAmmo(bulletsLeft, magSize);
+    }
+
+    public void SetReloadingAnimation()
+    {
+        m_Animation.Stop();
+        m_Animation.CrossFade(m_ReloadAnimationClip.name, 0.1f);
+    }
+    public void SetShootingAnimation()
+    {
+        m_Animation.Stop();
+        m_Animation.CrossFade(m_ShootAnimationClip.name, 0.19f);
+    }
+    public void SetIdleAnimation()
+    {
+        if (!m_Animation.IsPlaying(m_IdleAnimationClip.name))
+        {
+            m_Animation.CrossFade(m_IdleAnimationClip.name, 0.19f);
+        }
     }
 
     public int GetBulletsLeft()
