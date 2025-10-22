@@ -22,6 +22,8 @@ public class EnemyController : MonoBehaviour
     }
 
     TState m_State;
+    TState m_PreviousState;
+
 
     NavMeshAgent m_NavMeshAgent;
 
@@ -108,14 +110,17 @@ public class EnemyController : MonoBehaviour
         void SetIdleState()
         {
             m_State = TState.IDLE;
+            m_PreviousState = m_State;
         }
         void UpdateIdleState()
-        {   
+        {
+            Debug.Log("IDLE STATE");
             m_droppingItem.SetActive(false);
             SetPatrolState();
         }
         void SetPatrolState()
         {
+            m_PreviousState = m_State;
             m_State = TState.PATROL;
             m_CurrentPatrolPossitionId = 0;
             MoveToNextPatrolPosition();
@@ -130,6 +135,7 @@ public class EnemyController : MonoBehaviour
         }
         void SetAlertState()
         {
+            m_PreviousState = m_State;
             m_State = TState.ALERT;
         }
         void UpdateAlertState()
@@ -154,6 +160,7 @@ public class EnemyController : MonoBehaviour
 
         void SetAttackState()
         {
+            m_PreviousState = m_State;
             m_State = TState.ATTACK;
         }
         void UpdateAttackState()
@@ -165,6 +172,7 @@ public class EnemyController : MonoBehaviour
         }
         void SetChaseState()
         {
+            m_PreviousState = m_State;
             m_State = TState.CHASE;
         }
         void UpdateChaseState()
@@ -177,21 +185,36 @@ public class EnemyController : MonoBehaviour
             {
                 SetAttackState();
             }
+            if (l_Distance >= m_MaxEarDistance)
+            {
+                SetPatrolState();
+            }
         }
         public void SetHitState()
         {
+            m_PreviousState = m_State;
             m_State = TState.HIT;
         }
         void UpdateHitState()
         {
-            SetAlertState();
+            Debug.Log("HIT STATE");
+            if (m_PreviousState == TState.PATROL || m_PreviousState == TState.IDLE)
+            {  
+                SetAlertState();
+            }
+            else if (m_PreviousState == TState.ALERT || m_PreviousState == TState.ATTACK || m_PreviousState == TState.ALERT)
+            {
+                m_State = m_PreviousState;
+            }
         }
         void SetDieState()
         {
+            m_PreviousState = m_State;
             m_State = TState.DIE;
         }
         void UpdateDieState()
         {
+            Debug.Log("DIE STATE");
             gameObject.SetActive(false);
             m_droppingItem.transform.position = transform.position;
             m_droppingItem.SetActive(true);
@@ -247,7 +270,9 @@ public class EnemyController : MonoBehaviour
                 SetDieState();
             }
             else
+            {
                 SetHitState();
+            }
         }
 
 
