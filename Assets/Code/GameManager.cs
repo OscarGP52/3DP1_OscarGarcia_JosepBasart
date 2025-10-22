@@ -30,10 +30,10 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            SceneManager.LoadSceneAsync("Level1Scene");
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            SceneManager.LoadSceneAsync("Level2Scene");
+        if (Input.GetKeyDown(KeyCode.O))
+            SceneManager.LoadSceneAsync("SampleScene");
+        if (Input.GetKeyDown(KeyCode.P))
+            SceneManager.LoadSceneAsync("Terrain");
     }
     public PlayerController GetPlayer()
     {

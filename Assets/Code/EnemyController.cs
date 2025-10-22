@@ -54,9 +54,16 @@ public class EnemyController : MonoBehaviour
     public Transform m_LifeBarTransform;
     public LifeBarElementUI m_LifeBarElementUI;
 
+    [Header("Dropping Item")]
+    public GameObject m_droppingItem;
+
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Hit(10);
+        }
         switch (m_State)
         {
             case TState.IDLE:
@@ -104,6 +111,7 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateIdleState()
         {   
+            m_droppingItem.SetActive(false);
             SetPatrolState();
         }
         void SetPatrolState()
@@ -114,7 +122,7 @@ public class EnemyController : MonoBehaviour
         }
         void UpdatePatrolState()
         {
-            //Debug.Log("PATROL STATE");
+            Debug.Log("PATROL STATE");
             if (!m_NavMeshAgent.hasPath && m_NavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
                 MoveToNextPatrolPosition();
             if (HearsPlayer())
@@ -128,21 +136,29 @@ public class EnemyController : MonoBehaviour
         {
             // se queda quieto haciendo un barrido visual de 360 grados, si lo ve y no tiene distancia para pegar pasa a chase, si hay rango pasa a atack, si gira y no lo ve pasa a patrol UTILIZAR FUNCION SEESPLAYER
             //transform.rotation *= Quaternion.Euler(0, 120 * Time.deltaTime, 0); ns como hacer que solo gire 360 grados
-            //Debug.Log("ALERT STATE");   
-            m_NavMeshAgent.destination = transform.position;
-            if (SeesPlayer())// y ha dado justo una vuelta)
+            Debug.Log("ALERT STATE");
+            m_NavMeshAgent.isStopped = true;
+            m_NavMeshAgent.transform.Rotate(0, 1 * (m_NavMeshAgent.angularSpeed * Time.deltaTime), 0);
+            if (SeesPlayer())
             {
+                m_NavMeshAgent.isStopped = false;
                 SetChaseState();
             }
-            else
+
+            if (m_NavMeshAgent.transform.rotation.eulerAngles.y >= 360) 
+            {
+                m_NavMeshAgent.isStopped = false;
                 SetPatrolState();
+            }
         }
+
         void SetAttackState()
         {
             m_State = TState.ATTACK;
         }
         void UpdateAttackState()
         {
+            Debug.Log("ATTACK STATE");
             m_CooldownToAttack = 0;
             GameManager.GetGameManager().GetPlayer().RecibirDaño(10);
             SetChaseState();
@@ -153,7 +169,7 @@ public class EnemyController : MonoBehaviour
         }
         void UpdateChaseState()
         {
-            //Debug.Log("CHASE STATE");
+            Debug.Log("CHASE STATE");
             SetNextChasePossition();
             Vector3 l_PlayerPossition = GameManager.GetGameManager().GetPlayer().transform.position;
             float l_Distance = Vector3.Distance(l_PlayerPossition, transform.position);
@@ -177,6 +193,8 @@ public class EnemyController : MonoBehaviour
         void UpdateDieState()
         {
             gameObject.SetActive(false);
+            m_droppingItem.transform.position = transform.position;
+            m_droppingItem.SetActive(true);
         }
 
 

@@ -154,7 +154,8 @@ public class PlayerController : MonoBehaviour
             if (currentLife < 0)
             {
                 currentLife = 0;
-                //Die();
+                Die();
+                Restart();
                 //aqui iria la muerte del jugador que lo haremos desde el GameManager
             }
             GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
@@ -162,19 +163,22 @@ public class PlayerController : MonoBehaviour
         
     }
 
-
-
     void Die()
     {
-        GameManager.GetGameManager().m_Fade.FadeIn(() => { 
+        GameManager.GetGameManager().m_Fade.FadeIn(() => {
             GameManager.GetGameManager().RestartLevel(); });
     }
 
     public void Restart()
     {
-        m_CharacterController.enabled = false;
         transform.position = m_StartPosition;
         transform.rotation = m_startRotation;
-        m_CharacterController.enabled = true;
+        currentLife = maxLife;
+        currentShield = 0;
+    }
+
+    public void SetCheckPoint(Vector3 NewPosition)
+    {
+        m_StartPosition = NewPosition;
     }
 }
