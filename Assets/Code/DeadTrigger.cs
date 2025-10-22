@@ -13,7 +13,7 @@ public class DeadTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.GetGameManager().GetPlayer().Restart();
+            GameManager.GetGameManager().RestartLevel();
         }
     }
 }
