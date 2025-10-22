@@ -8,6 +8,7 @@ TagManager:
   - Life
   - Shield
   - Ammo
+  - NavMesh
   layers:
   - Default
   - TransparentFX
