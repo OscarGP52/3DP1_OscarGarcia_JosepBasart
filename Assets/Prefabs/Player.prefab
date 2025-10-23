@@ -236,8 +236,8 @@ MonoBehaviour:
   maxLife: 100
   maxShield: 100
   m_shootRange: 100
-  magSize: 40
-  timeBetweenShots: 0.5
+  magSize: 10
+  timeBetweenShots: 2
   m_hitLayer:
     serializedVersion: 2
     m_Bits: 1
