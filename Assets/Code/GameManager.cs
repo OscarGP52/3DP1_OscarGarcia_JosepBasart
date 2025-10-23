@@ -28,6 +28,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < m_DestroyObjects.childCount; i++)
             GameObject.Destroy(m_DestroyObjects.GetChild(i).gameObject);
         m_Player.Restart();
+
+        Debug.Log("RestartLevel ejecutado. Player actual: " + m_Player?.name);
+        for (int i = 0; i < m_DestroyObjects.childCount; i++)
+            GameObject.Destroy(m_DestroyObjects.GetChild(i).gameObject);
+
+        if (m_Player == null)
+            Debug.LogError("¡El Player en GameManager es NULL!");
+        else
+            m_Player.Restart();
     }
     private void Update()
     {

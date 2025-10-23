@@ -61,15 +61,16 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        l_Position = transform.position;
-        SetCheckPoint(l_Position);
+        GameManager.GetGameManager().SetPlayer(this);
 
+        
         bulletsLeft = magSize;
         magSize = 10;
         Cursor.lockState=CursorLockMode.Locked;
         currentLife = maxLife;
         currentShield = 0;
     }
+
     void Update()
     {
         float l_MouseX=Input.GetAxis("Mouse X");
@@ -295,10 +296,12 @@ public class PlayerController : MonoBehaviour
         transform.rotation = m_StartRotation;
         currentLife = maxLife;
         currentShield = 0;
+        Debug.Log("Reseteo");
     }
 
     public void SetCheckPoint(Vector3 NewPosition)
     {
         m_StartPosition = NewPosition;
+        Debug.Log("SpawnSet");
     }
 }

@@ -11,9 +11,10 @@ public class DeadTrigger : MonoBehaviour
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             GameManager.GetGameManager().RestartLevel();
+            Debug.Log("Reseteo");
         }
     }
 }
