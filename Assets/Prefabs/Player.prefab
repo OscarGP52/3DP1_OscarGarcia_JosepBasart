@@ -141,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 3431196666581870453}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 128.47, y: 24.373, z: 77.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -236,7 +236,7 @@ MonoBehaviour:
   maxLife: 100
   maxShield: 100
   m_shootRange: 100
-  magSize: 10
+  magSize: 40
   timeBetweenShots: 0.5
   m_hitLayer:
     serializedVersion: 2

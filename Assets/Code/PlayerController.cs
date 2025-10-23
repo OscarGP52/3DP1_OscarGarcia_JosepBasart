@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController m_CharacterController;
     float m_VerticalSpeed=0.0f;
     Vector3 m_StartPosition;
+    Vector3 l_Position;
     Quaternion m_StartRotation;
     public Camera m_Camera;
 
@@ -60,21 +61,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "PlayGround")
-        {
-            m_StartRotation = transform.rotation;
-            m_StartPosition = transform.position;
-        }
-        else if (SceneManager.GetActiveScene().name == "Level1")
-        {
-            m_StartRotation = transform.rotation;
-            m_StartPosition = transform.position;
-        }
-        else if (SceneManager.GetActiveScene().name == "Level2")
-        {
-            m_StartRotation = transform.rotation;
-            m_StartPosition = transform.position;
-        }
+        l_Position = transform.position;
+        SetCheckPoint(l_Position);
 
         bulletsLeft = magSize;
         magSize = 10;
