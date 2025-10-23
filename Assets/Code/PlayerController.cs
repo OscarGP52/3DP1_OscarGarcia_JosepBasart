@@ -1,5 +1,7 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController m_CharacterController;
     float m_VerticalSpeed=0.0f;
     Vector3 m_StartPosition;
-    Quaternion m_startRotation;
+    Quaternion m_StartRotation;
     public Camera m_Camera;
 
 
@@ -58,9 +60,22 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        /*esto va dentro de start() en un if de playercontroller
-        l_Player.m_StartRotation = Transform.rotation;
-        l_Player.m_StartPosition = Transform.position;*/
+        if (SceneManager.GetActiveScene().name == "PlayGround")
+        {
+            m_StartRotation = transform.rotation;
+            m_StartPosition = transform.position;
+        }
+        else if (SceneManager.GetActiveScene().name == "Level1")
+        {
+            m_StartRotation = transform.rotation;
+            m_StartPosition = transform.position;
+        }
+        else if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            m_StartRotation = transform.rotation;
+            m_StartPosition = transform.position;
+        }
+
         bulletsLeft = magSize;
         magSize = 10;
         Cursor.lockState=CursorLockMode.Locked;
@@ -162,6 +177,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Hit object: " + hitInfo.collider.gameObject.name);
             if (hitInfo.collider.gameObject.CompareTag("Diana"))
             {
+                GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateScore(1);
                 hitInfo.collider.gameObject.SetActive(false);
             }
             if (hitInfo.collider.gameObject.CompareTag("EnemyCollider"))
@@ -288,7 +304,7 @@ public class PlayerController : MonoBehaviour
     public void Restart()
     {
         transform.position = m_StartPosition;
-        transform.rotation = m_startRotation;
+        transform.rotation = m_StartRotation;
         currentLife = maxLife;
         currentShield = 0;
     }

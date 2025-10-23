@@ -31,16 +31,20 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.B))
             SceneManager.LoadSceneAsync("PlayGround");
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.N))
             SceneManager.LoadSceneAsync("Level1");
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.M))
             SceneManager.LoadSceneAsync("Level2");
     }
     public PlayerController GetPlayer()
     {
         return m_Player;
+    }
+    public UIsystem GetUI()
+    {
+        return m_UI;
     }
     public void SetPlayer(PlayerController Player)
     {

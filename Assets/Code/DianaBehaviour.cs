@@ -13,8 +13,11 @@ public class DianaBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        targetPosition = puntoB.transform.position;
-        this.gameObject.transform.position = puntoA.transform.position;
+        if (isMoving)
+        {
+            targetPosition = puntoB.transform.position;
+            this.gameObject.transform.position = puntoA.transform.position;
+        }
     }
 
     // Update is called once per frame
@@ -36,17 +39,6 @@ public class DianaBehaviour : MonoBehaviour
                     targetPosition = puntoB.transform.position;
                 }
             }
-        }
-    }
-
-    // si colisiona con una bala
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Bala"))
-        {
-            Destroy(other.gameObject);
-            this.gameObject.SetActive(false);
-            GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateScore(1);
         }
     }
 }
