@@ -22,14 +22,6 @@ public class GameManager : MonoBehaviour
         if (m_Player == null)
         {
             m_Player = GameObject.FindFirstObjectByType<PlayerController>();
-            if (m_Player != null)
-            {
-                Debug.Log($"Player asignado automáticamente: {m_Player.name}");
-            }
-            else
-            {
-                Debug.LogWarning("No se encontró ningún PlayerController en la escena.");
-            }
         }
     }
     static public GameManager GetGameManager()
