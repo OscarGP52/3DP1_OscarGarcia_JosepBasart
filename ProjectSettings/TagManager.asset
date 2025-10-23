@@ -9,6 +9,8 @@ TagManager:
   - Shield
   - Ammo
   - NavMesh
+  - Diana
+  - EnemyCollider
   layers:
   - Default
   - TransparentFX

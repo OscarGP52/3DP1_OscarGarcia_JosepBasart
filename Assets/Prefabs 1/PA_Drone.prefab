@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4739504808591131066}
   - component: {fileID: 8681363482576529211}
   - component: {fileID: 28914521044463997}
-  - component: {fileID: 2365855191321109404}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -112,20 +111,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2365855191321109404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4537559557266153326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34a0a713a371540418a1d9173be423bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitCollider
-  m_Damage: 10
-  m_Enemy: {fileID: 8063814473902944650}
 --- !u!1 &5272237393837801720
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +123,6 @@ GameObject:
   - component: {fileID: 2735384368304566737}
   - component: {fileID: 9083602074609246934}
   - component: {fileID: 3403312511754321725}
-  - component: {fileID: 3402361041464707381}
   m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: Untagged
@@ -238,20 +222,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3402361041464707381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5272237393837801720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34a0a713a371540418a1d9173be423bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitCollider
-  m_Damage: 10
-  m_Enemy: {fileID: 8063814473902944650}
 --- !u!1 &7460137854827273321
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +234,6 @@ GameObject:
   - component: {fileID: 2253728507535393398}
   - component: {fileID: 5153724912861141498}
   - component: {fileID: 330198451782220136}
-  - component: {fileID: 7322682185713714534}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -364,20 +333,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7322682185713714534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7460137854827273321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34a0a713a371540418a1d9173be423bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitCollider
-  m_Damage: 10
-  m_Enemy: {fileID: 8063814473902944650}
 --- !u!1001 &4762116446850816773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -511,7 +466,9 @@ MonoBehaviour:
     m_Bits: 1
   m_EyesHeight: 1.8
   m_MaxEarDistance: 3
+  m_MaxCooldownToAttack: 1000
   m_Life: 50
   m_MaxLife: 50
   m_LifeBarTransform: {fileID: 0}
   m_LifeBarElementUI: {fileID: 0}
+  m_droppingItem: {fileID: 0}

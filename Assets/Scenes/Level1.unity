@@ -6490,6 +6490,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Diana (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 649bf9bb5700e8542a4ed101c22e1e65, type: 3}
+      propertyPath: m_TagString
+      value: Diana
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10129,6 +10133,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Diana
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 649bf9bb5700e8542a4ed101c22e1e65, type: 3}
+      propertyPath: m_TagString
+      value: Diana
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12042,6 +12050,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 649bf9bb5700e8542a4ed101c22e1e65, type: 3}
       propertyPath: m_Name
       value: Diana (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 649bf9bb5700e8542a4ed101c22e1e65, type: 3}
+      propertyPath: m_TagString
+      value: Diana
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15051,6 +15063,18 @@ MonoBehaviour:
   m_DebugLockAngleKeyCode: 105
   maxLife: 100
   maxShield: 100
+  m_shootRange: 100
+  magSize: 10
+  timeBetweenShots: 0.5
+  timeBetweenShoot: 1
+  timeBetweenShooting: 0
+  m_hitLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Animation: {fileID: 0}
+  m_ReloadAnimationClip: {fileID: 0}
+  m_ShootAnimationClip: {fileID: 0}
+  m_IdleAnimationClip: {fileID: 0}
 --- !u!4 &4943085306537426603
 Transform:
   m_ObjectHideFlags: 0

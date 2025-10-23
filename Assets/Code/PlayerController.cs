@@ -42,11 +42,27 @@ public class PlayerController : MonoBehaviour
     public float maxShield = 100;
     float currentShield;
 
+    [Header("Shooting")]
+    public float m_shootRange = 100f;
+    public int magSize = 10;
+    public float timeBetweenShots = 0.5f;
+    private int bulletsLeft;
+    private int bulletsShot;
+    private bool reloading;
+    private bool shooting;
+    public LayerMask m_hitLayer;
+    public Animation m_Animation;
+    public AnimationClip m_ReloadAnimationClip;
+    public AnimationClip m_ShootAnimationClip;
+    public AnimationClip m_IdleAnimationClip;
+
     void Start()
     {
         /*esto va dentro de start() en un if de playercontroller
         l_Player.m_StartRotation = Transform.rotation;
         l_Player.m_StartPosition = Transform.position;*/
+        bulletsLeft = magSize;
+        magSize = 10;
         Cursor.lockState=CursorLockMode.Locked;
         currentLife = maxLife;
         currentShield = 0;
@@ -111,6 +127,99 @@ public class PlayerController : MonoBehaviour
             RecibirDaño(10);
         }
 
+        if (!shooting && !reloading)
+        {
+            SetIdleAnimation();
+        }
+        ShootingImput();
+        UpdateAmmoDisplay();
+    }
+
+    public void ShootingImput() 
+    {
+        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < 10 && magSize > 0 && !reloading)
+        {
+            Reload();
+        }
+        if (!reloading && bulletsLeft <= 0)
+        {
+            Reload();
+        }
+
+        if (Input.GetMouseButtonDown(0) && !reloading && bulletsLeft > 0)
+        {
+            bulletsShot = 0;
+            Shoot();
+        }
+    }
+
+    public void Shoot()
+    {
+        SetShootingAnimation();
+        Ray ray = m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, m_shootRange, m_hitLayer))
+        {
+            Debug.Log("Hit object: " + hitInfo.collider.gameObject.name);
+            if (hitInfo.collider.gameObject.CompareTag("Diana"))
+            {
+                hitInfo.collider.gameObject.SetActive(false);
+            }
+            if (hitInfo.collider.gameObject.CompareTag("EnemyCollider"))
+            {
+                hitInfo.collider.gameObject.GetComponentInParent<EnemyController>().Hit(10);
+            }
+        }
+        bulletsLeft--;
+        bulletsShot++;
+    }
+
+    public void Reload()
+    {
+        SetReloadingAnimation();
+        reloading = true;
+        Invoke("ReloadFinished", m_ReloadAnimationClip.length);
+    }
+    private void ReloadFinished()
+    {
+        int bulletsToLoad = 10 - bulletsLeft;
+        magSize -= bulletsToLoad;
+        if (magSize < 0)
+        {
+            bulletsLeft += bulletsToLoad + magSize;
+            magSize = 0;
+            reloading = false;
+        }
+        else
+        {
+            bulletsLeft += bulletsToLoad;
+            reloading = false;
+        }
+    }
+    public void SetReloadingAnimation()
+    {
+        m_Animation.Stop();
+        m_Animation.CrossFade(m_ReloadAnimationClip.name, 0.1f);
+    }
+    public void SetShootingAnimation()
+    {
+        m_Animation.Stop();
+        m_Animation.CrossFade(m_ShootAnimationClip.name, 0.19f);
+    }
+    public void SetIdleAnimation()
+    {
+        if (!m_Animation.IsPlaying(m_IdleAnimationClip.name))
+        {
+            m_Animation.CrossFade(m_IdleAnimationClip.name, 0.19f);
+        }
+    }
+    public void addAmmo(int ammo)
+    {
+        magSize += ammo;
+        UpdateAmmoDisplay();
+    }
+    public void UpdateAmmoDisplay()
+    {
+        GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateAmmo(bulletsLeft, magSize);
     }
 
     public float GetCurrentShield()
@@ -121,6 +230,15 @@ public class PlayerController : MonoBehaviour
     public float GetCurrentLife()
     {
         return currentLife;
+    }
+    public int GetBulletsLeft()
+    {
+        return bulletsLeft;
+    }
+
+    public int GetMagSize()
+    {
+        return magSize;
     }
 
     public void RecibirEscudo(int cantidad)
@@ -159,7 +277,6 @@ public class PlayerController : MonoBehaviour
             }
             GameObject.Find("Prueba UI").GetComponent<UIsystem>().UpdateLife(currentLife);
         }
-        
     }
 
     void Die()
